@@ -16,7 +16,6 @@ interface Poem {
 
 function Poems() {
     const [selectedCategory, setSelectedCategory] = useState('Todos')
-    const [hoveredPoem, setHoveredPoem] = useState<number | null>(null)
     const [selectedPoem, setSelectedPoem] = useState<Poem | null>(null)
     const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -65,8 +64,6 @@ function Poems() {
                             <article
                                 key={poem.id}
                                 className="poem-card"
-                                onMouseEnter={() => setHoveredPoem(poem.id)}
-                                onMouseLeave={() => setHoveredPoem(null)}
                                 style={{ animationDelay: `${index * 0.1}s` }}
                             >
                                 <div className="poem-image-wrapper">
