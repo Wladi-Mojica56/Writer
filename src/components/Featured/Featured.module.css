@@ -1,0 +1,540 @@
+
+.section {
+  position: relative;
+  padding: 5rem clamp(1.5rem, 5vw, 6rem);
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-dark) 100%);
+  border: none;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+/* Efecto de "mente fragmentada" - Scanlines */
+.section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      rgba(61, 27, 61, 0.02) 0px,
+      rgba(61, 27, 61, 0.02) 2px,
+      transparent 2px,
+      transparent 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(61, 27, 61, 0.01) 0px,
+      rgba(61, 27, 61, 0.01) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+  pointer-events: none;
+  z-index: 0;
+  animation: scanlines 0.15s linear infinite;
+}
+
+@keyframes scanlines {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(4px);
+  }
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 4rem;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== LADO IZQUIERDO - CONTENIDO ===== */
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  animation: slideInLeft 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  opacity: 0;
+  padding: 0;
+  order: 2;
+}
+
+.quote {
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
+  font-weight: 300;
+  color: var(--text-primary);
+  line-height: 2;
+  margin: 0;
+  padding: 0;
+  letter-spacing: 0.8px;
+  position: relative;
+  text-align: left;
+}
+
+/* Línea vertical decorativa */
+.quote::before {
+  content: '';
+  position: absolute;
+  left: -2rem;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, var(--magenta), transparent);
+  opacity: 0.6;
+  animation: heightGrow 1s ease 0.3s forwards;
+  height: 0;
+}
+
+@keyframes heightGrow {
+  from {
+    height: 0;
+  }
+  to {
+    height: 100%;
+  }
+}
+
+.highlight {
+  color: var(--magenta);
+  font-weight: 700;
+  position: relative;
+  padding: 0 6px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-shadow: 0 0 10px rgba(61, 27, 61, 0.3);
+}
+
+.highlight::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg, rgba(61, 27, 61, 0.15) 0%, transparent 100%);
+  border-radius: 2px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.quote:hover .highlight::before {
+  opacity: 1;
+}
+
+.quote:hover .highlight {
+  text-shadow: 0 0 20px rgba(61, 27, 61, 0.6);
+  transform: scale(1.05);
+}
+
+.author {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0;
+  padding-top: 2rem;
+  border-top: 2px solid var(--magenta);
+  letter-spacing: 2px;
+  font-weight: 500;
+  text-transform: uppercase;
+  position: relative;
+}
+
+.author::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--magenta);
+  animation: expandWidth 0.8s ease 0.5s forwards;
+}
+
+@keyframes expandWidth {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-decoration: none;
+  margin-top: 2rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: fit-content;
+  padding: 1rem 1.5rem;
+  border: 2px solid var(--magenta);
+  border-radius: 0;
+  cursor: pointer;
+  min-height: 44px;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  background: transparent;
+}
+
+.link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--magenta);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: -1;
+}
+
+.link:hover::before {
+  transform: scaleX(1);
+}
+
+.link:hover {
+  color: var(--bg-primary);
+  transform: translateX(4px);
+}
+
+.link:focus-visible {
+  outline: 2px solid var(--magenta);
+  outline-offset: 4px;
+}
+
+.arrow {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: inline-block;
+  font-size: 1.1rem;
+}
+
+.link:hover .arrow {
+  transform: translateX(6px);
+}
+
+/* ===== LADO DERECHO - PORTADA ===== */
+
+.card {
+  position: relative;
+  background: transparent;
+  border: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: auto;
+  animation: fadeInScale 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards;
+  opacity: 0;
+  order: 1;
+}
+
+.cardHeader,
+.label,
+.divider {
+  display: none;
+}
+
+.cardContent {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  padding: 0;
+  margin: 0;
+  min-height: auto;
+  position: relative;
+  width: 100%;
+}
+
+/* Efecto de "aura psicológica" */
+.cardContent::before {
+  content: '';
+  position: absolute;
+  inset: -30px;
+  border: 1px solid var(--magenta);
+  opacity: 0;
+  animation: pulseFrame 2s ease-in-out infinite 0.5s;
+  box-shadow: 
+    0 0 30px rgba(61, 27, 61, 0.2),
+    inset 0 0 30px rgba(61, 27, 61, 0.1);
+}
+
+@keyframes pulseFrame {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
+}
+
+/* Efecto de "distorsión" */
+.cardContent::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    linear-gradient(45deg, transparent 30%, rgba(61, 27, 61, 0.05) 50%, transparent 70%);
+  pointer-events: none;
+  opacity: 0;
+  animation: distort 3s ease-in-out infinite;
+}
+
+@keyframes distort {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.bookImage {
+  height: auto;
+  width: 100%;
+  max-width: 320px;
+  object-fit: contain;
+  filter: 
+    drop-shadow(0 15px 50px rgba(61, 27, 61, 0.3))
+    contrast(1.08)
+    brightness(0.92)
+    saturate(1.1);
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  z-index: 2;
+}
+
+.bookImage:hover {
+  filter: 
+    drop-shadow(0 25px 70px rgba(61, 27, 61, 0.5))
+    contrast(1.15)
+    brightness(1)
+    saturate(1.2);
+  transform: translateY(-10px) rotateZ(2deg) scale(1.03);
+}
+
+.bookImage:focus-visible {
+  outline: 2px solid var(--magenta);
+  outline-offset: 10px;
+}
+
+.cardFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--magenta);
+  margin-top: 2.5rem;
+  text-align: center;
+}
+
+.pulseLine {
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(to right, var(--magenta), transparent);
+  margin: 0 auto;
+  animation: pulseWave 2.5s ease-in-out infinite;
+}
+
+@keyframes pulseWave {
+  0%, 100% {
+    width: 60px;
+    opacity: 0.3;
+  }
+  50% {
+    width: 100px;
+    opacity: 1;
+  }
+}
+
+.cardSubtitle {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  margin: 0;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 700;
+  word-spacing: 0.5rem;
+}
+
+/* ===== ANIMACIONES PRINCIPALES ===== */
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 1024px) {
+  .section {
+    min-height: auto;
+    padding: 4rem clamp(1.5rem, 4vw, 3rem);
+  }
+
+  .container {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .card {
+    padding: 0;
+    border-left: none;
+    border-top: 2px solid var(--magenta);
+    padding-top: 1.5rem;
+  }
+
+  .cardContent {
+    min-height: 320px;
+  }
+
+  .cardContent::before {
+    width: 280px;
+    height: 280px;
+  }
+
+  .cardFooter {
+    display: none;
+  }
+
+  .content {
+    padding: 0;
+  }
+
+  .bookImage {
+    max-width: 240px;
+  }
+
+  .quote::before {
+    left: -1rem;
+    font-size: 2.5rem;
+  }
+  
+  .quote::after {
+    right: -1rem;
+    bottom: -1rem;
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 3.5rem clamp(1.5rem, 4vw, 2rem);
+  }
+
+  .quote {
+    font-size: clamp(1.1rem, 1.6vw, 1.3rem);
+    line-height: 1.7;
+  }
+
+  .cardContent {
+    min-height: 280px;
+  }
+
+  .cardContent::before {
+    width: 240px;
+    height: 240px;
+  }
+
+  .bookImage {
+    max-width: 200px;
+  }
+
+  .author {
+    font-size: 0.85rem;
+  }
+
+  .link {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.6rem;
+  }
+
+  .quote::before {
+    left: -0.8rem;
+    font-size: 2rem;
+  }
+  
+  .quote::after {
+    right: -0.8rem;
+    bottom: -0.8rem;
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding: 2.5rem 1rem;
+  }
+
+  .container {
+    gap: 1.5rem;
+  }
+
+  .quote {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .cardContent {
+    min-height: 240px;
+  }
+
+  .cardContent::before {
+    width: 200px;
+    height: 200px;
+  }
+
+  .bookImage {
+    max-width: 160px;
+  }
+
+  .card {
+    padding-top: 1rem;
+  }
+
+  .quote::before {
+    display: none;
+  }
+
+  .content {
+    gap: 1rem;
+  }
+  
+  .quote::after {
+    display: none;
+  }
+}
